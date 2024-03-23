@@ -26,4 +26,15 @@ jobs:
         run: go mod download
 
       - name: Run API Tests
-        run: go test -v ./api_test/tests
+        run: go test -v -coverprofile=coverage.out ./api_test/tests
+
+      - name: Upload Code Coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage.out
+
+      - name: Run Linter
+        run: |
+          go get -u golang.org/x/lint/golint
+          golint ./api_test/tests
