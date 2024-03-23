@@ -20,10 +20,12 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.22
+          go-version: 1.16
 
       - name: Install Dependencies
-        run: go mod download
+        run: |
+          go mod download
+          go get -u golang.org/x/lint/golint
 
       - name: Run API Tests
         run: go test -v -coverprofile=coverage.out ./api_test/tests
@@ -36,5 +38,4 @@ jobs:
 
       - name: Run Linter
         run: |
-          go get -u golang.org/x/lint/golint
-          golint ./api_test/tests
+          ~/go/bin/golint ./api_test/tests
